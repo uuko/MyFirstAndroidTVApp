@@ -34,6 +34,25 @@ class MainActivity : Activity() {
 
             }
         })
+        vPhotoChanger.setOnClickListener(object: View.OnClickListener{
+            override fun onClick(view: View?) {
+
+                val intent: Intent = Intent()
+                intent.setClass(this@MainActivity, PhotoChangerActivity::class.java)
+                startActivity(intent)
+
+            }
+        })
+        vWebDav.setOnClickListener(object: View.OnClickListener{
+            override fun onClick(view: View?) {
+
+                val intent: Intent = Intent()
+                intent.setClass(this@MainActivity, WebDavActivity::class.java)
+                startActivity(intent)
+
+            }
+        })
+
     }
 
 }

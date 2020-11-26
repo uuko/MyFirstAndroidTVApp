@@ -29,6 +29,25 @@
             android:layout_marginTop="10dp"
             android:layout_centerHorizontal="true"/>
 
+        <Button
+            android:id="@+id/vPhotoChanger"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/vTopTabNavigation"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            android:text="Photo Changer"/>
+
+        <Button
+            android:id="@+id/vWebDav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/vPhotoChanger"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            android:text="WebDav"/>
+
+
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
