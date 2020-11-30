@@ -6,8 +6,9 @@ import android.util.Log
 import android.view.View
 import androidx.leanback.widget.*
 import androidx.recyclerview.widget.RecyclerView
+import com.cindy.myfirstandroidtvapp.CustomView.CustomListRowPresenter.NotifyDataType.DECREASE
+import com.cindy.myfirstandroidtvapp.CustomView.CustomListRowPresenter.NotifyDataType.INCREASE
 import com.cindy.myfirstandroidtvapp.FocusType
-import com.cindy.myfirstandroidtvapp.R
 
 class CustomListRowPresenter(var mContext: Context?,
                              var mFocusType: FocusType? = FocusType.NORMAL,
@@ -15,10 +16,13 @@ class CustomListRowPresenter(var mContext: Context?,
                              focusHightlightMode: Int = FocusHighlight.ZOOM_FACTOR_MEDIUM): ListRowPresenter(focusHightlightMode) {
 
     private val TAG: String = javaClass.simpleName
+    private var selected_One:Int? =0
     private var vHorizontalGridView: HorizontalGridView? = null
     private var isHorizontalGridViewInitFinish: Boolean = false
     private var mNotifyDataType: NotifyDataType = NotifyDataType.INCREASE
     private var mListRow: ListRow? = null
+    override fun isUsingDefaultListSelectEffect() = false
+
 
     override fun onBindViewHolder(
         viewHolder: Presenter.ViewHolder?,
@@ -29,15 +33,41 @@ class CustomListRowPresenter(var mContext: Context?,
         val view: View = viewHolder!!.view
         vHorizontalGridView = view.findViewById(androidx.leanback.R.id.row_content)
 
+        shadowEnabled = false
         when(mFocusType){
             FocusType.START -> {
                 Log.v(TAG, "===== FocusType.START =====")
                 vHorizontalGridView?.run{
                     Log.w(TAG, "vHorizontalGridView is not null")
-                    windowAlignment = BaseGridView.WINDOW_ALIGN_LOW_EDGE
+                    windowAlignment = BaseGridView.WINDOW_ALIGN_BOTH_EDGE
                     windowAlignmentOffsetPercent = 0f
-                    windowAlignmentOffset = resources.getDimensionPixelSize(R.dimen.lb_browse_padding_start)
+                    windowAlignmentOffset = 0
                     itemAlignmentOffsetPercent = 0f
+                }
+                vHorizontalGridView?.run {
+                    addOnChildViewHolderSelectedListener(object: OnChildViewHolderSelectedListener(){
+                        override fun onChildViewHolderSelected(
+                            parent: RecyclerView?,
+                            child: RecyclerView.ViewHolder?,
+                            position: Int,
+                            subposition: Int
+                        ) {
+
+
+                            Log.d("11111111111111111", "position: $position")
+                            Log.d("11111111111111111", "subposition: $subposition")
+                            Log.d("11111111111111111", "parent size??? ${parent!!.adapter!!.itemCount}")
+
+//                            if(position==parent.adapter!!.itemCount-1){
+//                                mNotifyDataType = NotifyDataType.DECREASE
+//                                notifyData()
+//                            }else if(position==0){
+//                                mNotifyDataType = NotifyDataType.INCREASE
+//                                notifyData()
+//                            }
+
+                        }
+                    })
                 }
             }
         }
@@ -133,6 +163,19 @@ class CustomListRowPresenter(var mContext: Context?,
      */
     enum class NotifyDataType {
         INCREASE, DECREASE
+    }
+
+    override fun onRowViewSelected(holder: RowPresenter.ViewHolder?, selected: Boolean) {
+        super.onRowViewSelected(holder, selected)
+        if (holder?.row?.id.toString()!="null"){
+            Log.d("selected",holder?.row?.id.toString())
+            selected_One=holder?.row?.id?.toInt()
+        }
+
+    }
+
+    fun getNowSelected():Int?{
+        return selected_One
     }
 
 }

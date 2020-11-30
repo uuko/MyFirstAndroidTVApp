@@ -9,10 +9,12 @@ import androidx.leanback.widget.*
 import com.cindy.myfirstandroidtvapp.CustomView.CustomCardPresenter
 import com.cindy.myfirstandroidtvapp.CustomView.CustomHeaderItem
 import com.cindy.myfirstandroidtvapp.CustomView.CustomListRowPresenter
+import com.cindy.myfirstandroidtvapp.Model.BannerData
 import com.cindy.myfirstandroidtvapp.Model.Data
 import com.cindy.myfirstandroidtvapp.Model.Item
 import com.cindy.myfirstandroidtvapp.Model.SubCategory
-import com.cindy.myfirstandroidtvapp.Model.BannerData
+
+
 
 class PageRowFragmentFactory(var mContext: Context? = null): BrowseSupportFragment.FragmentFactory<Fragment?>() {
 
@@ -28,18 +30,29 @@ class PageRowFragmentFactory(var mContext: Context? = null): BrowseSupportFragme
                 is Data -> {
                     val subCategoryList: List<SubCategory>? = sub_categories
                     if(subCategoryList!=null && subCategoryList.isNotEmpty()){
-                        val rowsSupportFragment: RowsSupportFragment = RowsSupportFragment()
+                        val rowsSupportFragment= RowsSupportFragment()
                         val rowsAdapter: ArrayObjectAdapter = ArrayObjectAdapter(
                             CustomListRowPresenter(
                                 mContext,
                                 FocusType.START,
-                                focusHightlightMode = FocusHighlight.ZOOM_FACTOR_XSMALL
-                            )
+                                focusHightlightMode = FocusHighlight.ZOOM_FACTOR_SMALL
+                            ).apply {  shadowEnabled = false }
                         )
+                        val listRowAdapter: ArrayObjectAdapter = ArrayObjectAdapter(
+                            CustomCardPresenter()
+                        )
+                        listRowAdapter.add(Item("string","slideshow","1234",1))
+                        rowsAdapter.add(ListRow( listRowAdapter))
                         for ((subCategoryIndex, subCategory) in subCategoryList.withIndex()){
                             val subCategoryName: String? = subCategory.sub_category_name
-                            if(BuildConfig.DEBUG) Log.d(TAG, "subCategoryName: $subCategoryName")
+
+//                            subCategory.items?.get(subCategoryIndex-1)?.whichRow=subCategoryIndex
                             val items: List<Item>? = subCategory.items
+                            for ( i in 0 until items!!.size){
+                                items.get(i).whichRow=subCategoryIndex
+                            }
+
+                            if(BuildConfig.DEBUG) Log.d("subCategoryName", "subCategoryName: ${subCategoryIndex}+${subCategoryName}+${subCategory.items}")
                             val listRowAdapter: ArrayObjectAdapter = ArrayObjectAdapter(
                                 CustomCardPresenter()
                             )
@@ -62,7 +75,7 @@ class PageRowFragmentFactory(var mContext: Context? = null): BrowseSupportFragme
                         CustomListRowPresenter(
                             mContext,
                             isBanner = true
-                    ))
+                    ).apply {  shadowEnabled = false })
                     val listRowAdapter: ArrayObjectAdapter = ArrayObjectAdapter(CustomBannerCardPresenter())
                     val items: List<String>? = banner_list
                     if(items!=null && items.isNotEmpty()){

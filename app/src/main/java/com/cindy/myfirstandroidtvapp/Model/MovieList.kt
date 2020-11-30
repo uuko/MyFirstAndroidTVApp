@@ -15,6 +15,8 @@ data class SubCategory(
 )
 
 data class Item(
+    var species: String? = null,
     var name: String? = null,
-    var imageUrl: String? = null
+    var imageUrl: String? = null,
+    var whichRow:Int ?=null
 )

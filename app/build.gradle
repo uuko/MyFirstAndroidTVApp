@@ -47,4 +47,5 @@ dependencies {
     implementation 'com.thegrizzlylabs.sardine-android:sardine-android:0.5'
     implementation 'com.paul623.wdsyncer:wdsyncer:0.0.3'
 
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 }
