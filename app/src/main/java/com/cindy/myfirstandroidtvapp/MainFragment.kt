@@ -6,11 +6,14 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.leanback.app.BrowseSupportFragment
 import androidx.leanback.widget.*
+import androidx.leanback.widget.FocusHighlight.ZOOM_FACTOR_NONE
 import com.cindy.myfirstandroidtvapp.CustomView.CustomHeaderItem
+import com.cindy.myfirstandroidtvapp.Model.BannerData
 import com.cindy.myfirstandroidtvapp.Model.Data
 import com.cindy.myfirstandroidtvapp.Model.MovieList
-import com.cindy.myfirstandroidtvapp.Model.*
 import com.google.gson.Gson
+
+
 
 class MainFragment: BrowseSupportFragment() {
 
@@ -27,6 +30,15 @@ class MainFragment: BrowseSupportFragment() {
         getMovieList()
         init()
         mainFragmentRegistry.registerFragment(PageRow::class.java, PageRowFragmentFactory(activity))
+        setHeaderPresenterSelector(object : PresenterSelector() {
+            override fun getPresenter(o: Any): Presenter {
+                return IconHeaderItemPresenter()
+            }
+        })
+
+
+
+
 
     }
 
@@ -48,20 +60,20 @@ class MainFragment: BrowseSupportFragment() {
 
     fun init(){
 
-        val mainAdapter: ArrayObjectAdapter = ArrayObjectAdapter(ListRowPresenter())
+        val mainAdapter: ArrayObjectAdapter = ArrayObjectAdapter(ListRowPresenter(ZOOM_FACTOR_NONE))
         adapter = mainAdapter
 
         //Banner
-        val header: CustomHeaderItem = CustomHeaderItem(BANNER_ID, "最新消息", mBannerData)
-        val pageRow: PageRow = PageRow(header)
-        mainAdapter.add(pageRow)
+//        val header: CustomHeaderItem = CustomHeaderItem(BANNER_ID, "最新消息", mBannerData)
+//        val pageRow: PageRow = PageRow(header)
+//        mainAdapter.add(pageRow)
 
         if(mMovieList!=null){
             mMovieListData = mMovieList!!.data
             if(mMovieListData!=null && mMovieListData!!.isNotEmpty()){
                 for((categoryIndex, category) in mMovieListData!!.withIndex()){
                     val categoryName: String? = category.category_name
-                    if(BuildConfig.DEBUG) Log.w(TAG, "categoryName: $categoryName")
+                    if(BuildConfig.DEBUG) Log.w("categoryName", "categoryName: $categoryName")
                     val header: CustomHeaderItem =
                         CustomHeaderItem(
                             categoryIndex.toLong(),
@@ -78,7 +90,7 @@ class MainFragment: BrowseSupportFragment() {
             //左側 HeaderSupportFragment 的背景
             brandColor = ContextCompat.getColor(context!!, R.color.header_background)
             //右側右上方 icon
-            badgeDrawable = ContextCompat.getDrawable(context!!, R.drawable.vscinemas_logo)
+//            badgeDrawable = ContextCompat.getDrawable(context!!, R.drawable.vscinemas_logo)
         }
     }
 }
