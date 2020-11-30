@@ -72,6 +72,7 @@ class MainFragment: BrowseSupportFragment() {
             mMovieListData = mMovieList!!.data
             if(mMovieListData!=null && mMovieListData!!.isNotEmpty()){
                 for((categoryIndex, category) in mMovieListData!!.withIndex()){
+                    
                     val categoryName: String? = category.category_name
                     if(BuildConfig.DEBUG) Log.w("categoryName", "categoryName: $categoryName")
                     val header: CustomHeaderItem =
